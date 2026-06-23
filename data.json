@@ -1,0 +1,75 @@
+{
+  "updated_at": "1404/03/30 - 14:20",
+  "products": [
+    {
+      "id": "femn-hc",
+      "name": "فرومنگنز پرکربن",
+      "name_en": "Ferromanganese High Carbon",
+      "description": "روند بازار در هفته جاری صعودی بوده است.",
+      "image_url": "sample-chart.png",
+      "media_type": "image",
+      "prices": [
+        { "label": "قیمت بازار ایران", "price": 215000, "unit": "تومان / کیلوگرم", "change_percent": 1.2, "change_direction": "up" },
+        { "label": "واردات از هند (FOB)", "price": 980, "unit": "دلار / تن", "change_percent": 0.5, "change_direction": "up" },
+        { "label": "واردات از هند (CFR)", "price": 1040, "unit": "دلار / تن", "change_percent": 0.3, "change_direction": "down" },
+        { "label": "کارگو موجود در ایران (DDP)", "price": 225000, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
+      ]
+    },
+    {
+      "id": "femn-mc",
+      "name": "فرومنگنز متوسط‌کربن",
+      "name_en": "Ferromanganese Medium Carbon",
+      "description": "",
+      "image_url": "",
+      "media_type": "image",
+      "prices": [
+        { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
+      ]
+    },
+    {
+      "id": "femn-lc",
+      "name": "فرومنگنز کم‌کربن",
+      "name_en": "Ferromanganese Low Carbon",
+      "description": "",
+      "image_url": "",
+      "media_type": "image",
+      "prices": [
+        { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
+      ]
+    },
+    {
+      "id": "simn",
+      "name": "سیلیکومنگنز",
+      "name_en": "Silicomanganese",
+      "description": "",
+      "image_url": "",
+      "media_type": "image",
+      "prices": [
+        { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
+      ]
+    },
+    {
+      "id": "mn-ore",
+      "name": "سنگ منگنز",
+      "name_en": "Manganese Ore",
+      "description": "",
+      "image_url": "",
+      "media_type": "image",
+      "prices": [
+        { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
+      ]
+    }
+  ]
+}

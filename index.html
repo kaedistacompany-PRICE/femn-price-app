@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>قیمت فرومنگنز و آلیاژها</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#15140F" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="فرومنگنز" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <header class="app-header">
+      <div class="brand-mark"><span></span><span></span><span></span></div>
+      <div class="brand-text">
+        <h1>اطلاع‌رسانی روزانه قیمت</h1>
+        <p>فرومنگنز و آلیاژهای فرومنگنزی</p>
+      </div>
+      <div class="company-tag">
+        <span class="company-fa">شتاب تجهیز آوران</span>
+        <span class="company-en">STA</span>
+      </div>
+    </header>
+
+    <div class="updated-row">
+      <span class="dot"></span>
+      <span id="updated-at"></span>
+    </div>
+
+    <nav id="product-nav" class="product-nav"></nav>
+
+    <div id="products-wrap"></div>
+
+    <p class="section-label">ارتباط با ما</p>
+    <div class="action-grid">
+      <a class="btn btn-whatsapp" id="whatsapp-btn" target="_blank" rel="noopener">
+        <span class="btn-icon">●</span> ارسال در واتساپ
+      </a>
+      <a class="btn btn-call" id="call-btn">
+        <span class="btn-icon">☎</span> تماس مستقیم
+      </a>
+      <a class="btn btn-email" id="email-btn">
+        <span class="btn-icon">✉</span> ارسال ایمیل
+      </a>
+      <a class="btn btn-website" id="website-btn" target="_blank" rel="noopener">
+        <span class="btn-icon">🌐</span> وبسایت ما
+      </a>
+    </div>
+
+    <div class="lead-form">
+      <label for="lead-name">نام شما (اختیاری)</label>
+      <input type="text" id="lead-name" placeholder="مثلا: علی رضایی" />
+      <label for="lead-phone">شماره تماس شما (اختیاری)</label>
+      <input type="tel" id="lead-phone" placeholder="09xxxxxxxxx" />
+    </div>
+
+    <div class="install-card" id="install-card">
+      <div class="install-text">
+        <strong>نصب اپ روی گوشی</strong>
+        <span>دسترسی سریع بدون مرورگر</span>
+      </div>
+      <button class="install-btn" id="install-action">نصب</button>
+    </div>
+
+    <div class="ios-guide" id="ios-guide">
+      <strong>نصب روی آیفون</strong>
+      <ol>
+        <li>روی آیکون اشتراک‌گذاری <span class="share-icon">⬆</span> در پایین صفحه Safari بزنید</li>
+        <li>گزینه «Add to Home Screen» را انتخاب کنید</li>
+        <li>روی «Add» بزنید تا آیکون اپ اضافه شود</li>
+      </ol>
+    </div>
+
+    <footer class="app-footer">
+      <p>بروزرسانی روزانه قیمت • فقط جهت اطلاع‌رسانی</p>
+      <p class="footer-company">ارائه شده توسط شرکت شتاب تجهیز آوران (STA)</p>
+      <p class="footer-link"><a href="https://plum-norma-17.tiiny.site" target="_blank" rel="noopener">plum-norma-17.tiiny.site</a></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

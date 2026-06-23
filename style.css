@@ -1,0 +1,452 @@
+:root {
+  --bg: #15140F;
+  --surface: #211F1A;
+  --surface-raised: #29261F;
+  --border: #3A372E;
+  --text-primary: #F2EEE3;
+  --text-secondary: #A8A395;
+  --text-tertiary: #6F6B5E;
+  --accent: #E8732B;
+  --accent-deep: #8B3A12;
+  --up: #6FA563;
+  --down: #C2594A;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --font-fa: "Vazirmatn", sans-serif;
+  --font-num: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-fa);
+  direction: rtl;
+}
+
+body {
+  min-height: 100vh;
+  padding-bottom: 32px;
+}
+
+.app-shell {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 0 14px;
+  justify-content: space-between;
+}
+
+.company-tag {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.company-tag .company-fa {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+.company-tag .company-en {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--accent);
+  font-family: var(--font-num);
+  direction: ltr;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+}
+
+.brand-mark span {
+  display: block;
+  height: 5px;
+  border-radius: 2px;
+}
+.brand-mark span:nth-child(1) { width: 60%; background: var(--accent-deep); align-self: center; }
+.brand-mark span:nth-child(2) { width: 78%; background: var(--accent); align-self: center; }
+.brand-mark span:nth-child(3) { width: 100%; background: #F0935C; align-self: center; }
+
+.brand-text h1 {
+  font-size: 15.5px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+.brand-text p {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+  direction: ltr;
+  text-align: right;
+}
+
+/* ---------- Product nav pills ---------- */
+.product-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+.product-nav::-webkit-scrollbar { display: none; }
+
+.nav-pill {
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ---------- Product section ---------- */
+.product-section {
+  margin-bottom: 30px;
+  padding-top: 6px;
+}
+.product-section + .product-section {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.product-heading h2 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+.product-heading p {
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  margin: 2px 0 12px;
+  direction: ltr;
+  text-align: right;
+}
+
+.ask-product-btn {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--accent-deep);
+  padding-bottom: 2px;
+}
+
+/* ---------- Updated row ---------- */
+.updated-row {
+  margin-top: 4px;
+  margin-bottom: 14px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.updated-row .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--up);
+}
+
+/* ---------- Price cards (multiple) ---------- */
+.prices-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.price-card {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface-raised), var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.price-card::before {
+  content: "";
+  position: absolute;
+  inset: -60% -10% auto -10%;
+  height: 160%;
+  background: radial-gradient(circle at 50% 30%, rgba(232,115,43,0.22), transparent 65%);
+  z-index: -1;
+  animation: ember-pulse 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .price-card::before { animation: none; }
+}
+
+@keyframes ember-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+.price-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.price-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.change-badge {
+  font-family: var(--font-num);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  direction: ltr;
+}
+.change-badge.up { color: var(--up); background: rgba(111,165,99,0.14); }
+.change-badge.down { color: var(--down); background: rgba(194,89,74,0.14); }
+
+.price-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.price-value {
+  font-family: var(--font-num);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  direction: ltr;
+}
+
+.price-unit {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Media block ---------- */
+.media-block {
+  margin-top: 18px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.media-block img, .media-block video {
+  width: 100%;
+  display: block;
+}
+
+.description-block {
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+  padding: 0 2px;
+}
+
+/* ---------- Section title ---------- */
+.section-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin: 26px 0 10px;
+  padding-right: 2px;
+}
+
+/* ---------- Action buttons ---------- */
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-fa);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-whatsapp {
+  background: #1F3A2A;
+  color: #8FD9A8;
+  border-color: #2C5239;
+}
+.btn-call {
+  background: var(--surface-raised);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+.btn-email {
+  background: var(--surface-raised);
+  color: var(--accent);
+  border-color: var(--border);
+}
+.btn-website {
+  background: #20303D;
+  color: #8FC6E8;
+  border-color: #2C4254;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-icon { font-size: 16px; line-height: 1; }
+
+/* ---------- Lead form ---------- */
+.lead-form {
+  margin-top: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+.lead-form label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.lead-form input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 11px 12px;
+  font-family: var(--font-fa);
+  font-size: 13.5px;
+  margin-bottom: 12px;
+}
+.lead-form input::placeholder { color: var(--text-tertiary); }
+.lead-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ---------- Install banner ---------- */
+.install-card {
+  margin-top: 22px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.install-card.visible { display: flex; }
+.install-text strong {
+  display: block;
+  font-size: 13.5px;
+  margin-bottom: 2px;
+}
+.install-text span {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+}
+.install-btn {
+  flex-shrink: 0;
+  background: var(--accent);
+  color: #1A0D04;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 9px 14px;
+  font-family: var(--font-fa);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ---------- iOS install guide ---------- */
+.ios-guide {
+  margin-top: 22px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: none;
+}
+.ios-guide.visible { display: block; }
+.ios-guide strong {
+  font-size: 13.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+.ios-guide ol {
+  margin: 0;
+  padding-right: 18px;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 2;
+}
+.ios-guide .share-icon {
+  display: inline-block;
+  font-family: var(--font-num);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-size: 11px;
+  color: var(--text-primary);
+}
+
+footer.app-footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  padding: 0 10px;
+}
+footer.app-footer p { margin: 0; }
+footer.app-footer .footer-company {
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+footer.app-footer .footer-link {
+  margin-top: 4px;
+}
+footer.app-footer .footer-link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 10.5px;
+  direction: ltr;
+  unicode-bidi: plaintext;
+}
