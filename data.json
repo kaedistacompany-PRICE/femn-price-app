@@ -46,14 +46,14 @@
     {
       "id": "simn",
       "name": "سیلیکومنگنز",
-      "name_en": "Silicomanganese",
+      "name_en": "Silicomanganese 60 14",
       "description": "",
       "image_url": "",
       "media_type": "image",
       "prices": [
-        { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
-        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
-        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "قیمت بازار ایران", "price": "355000-370000", "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (FOB)", "price": "840-855", "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": "1050-165", "unit": "دلار / تن", "change_percent": null, "change_direction": null },
         { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
       ]
     },
