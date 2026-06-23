@@ -23,7 +23,7 @@ function normalizeIranNumber(raw) {
   } else if (!digits.startsWith("98")) {
     digits = "98" + digits;
   }
-  return digits; // مثال خروجی: 989123456789
+  return digits; // مثال خروجی: 989375026963
 }
 
 const WHATSAPP_NUMBER = normalizeIranNumber(CONFIG.WHATSAPP_NUMBER_RAW);
