@@ -9,7 +9,7 @@
       "image_url": "sample-chart.png",
       "media_type": "image",
       "prices": [
-        { "label": "قیمت بازار ایران", "price": "385000-395000", "unit": "تومان / کیلوگرم", "change_percent": 1.2, "change_direction": "up" },
+        { "label": "قیمت بازار ایران", "price": "385000-410000", "unit": "تومان / کیلوگرم", "change_percent": 1.2, "change_direction": "up" },
         { "label": "واردات از هند (FOB)", "price": "975-990", "unit": "دلار / تن", "change_percent": 0.5, "change_direction": "up" },
         { "label": "واردات از هند (CFR BND)", "price": "1210-1225", "unit": "دلار / تن", "change_percent": 0.3, "change_direction": "down" },
         { "label": "کارگو موجود در ایران (DDP)", "price": "381000-385000", "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
