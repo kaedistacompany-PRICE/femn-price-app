@@ -17,8 +17,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ===== Announcement banner ===== */
+    #announcement-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: #F5C84B;
+      color: #1A1707;
+      font-family: 'Vazirmatn', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 1.6;
+      text-align: center;
+      padding: 12px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      transform: translateY(-110%);
+      transition: transform 0.5s ease;
+    }
+    #announcement-banner.show {
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
+  <div id="announcement-banner"><span id="announcement-text"></span></div>
+
   <div class="app-shell">
 
     <header class="app-header">
@@ -90,5 +117,33 @@
   </div>
 
   <script src="app.js"></script>
+
+  <script>
+    /* =====================================================
+       ANNOUNCEMENT BANNER — EDIT YOUR MESSAGE HERE
+       Use \n for a line break.
+       Just change the text inside the quotes below and
+       re-upload this file. Nothing else needs to change.
+    ===================================================== */
+    const ANNOUNCEMENT_TEXT = "فروش نقدی، چکی، پیش‌فروش\nموجودی روزانه";
+
+    (function () {
+      const banner = document.getElementById('announcement-banner');
+      const textEl = document.getElementById('announcement-text');
+      textEl.innerHTML = ANNOUNCEMENT_TEXT.replace(/\n/g, '<br>');
+
+      const SHOW_MS = 5000;   // how long it stays visible
+      const HIDE_MS = 15000;  // how long it stays hidden before showing again
+
+      function cycle() {
+        banner.classList.add('show');
+        setTimeout(() => {
+          banner.classList.remove('show');
+          setTimeout(cycle, HIDE_MS);
+        }, SHOW_MS);
+      }
+      cycle();
+    })();
+  </script>
 </body>
 </html>
