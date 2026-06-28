@@ -41,6 +41,21 @@
     #announcement-banner.show {
       transform: translateY(0);
     }
+
+    /* ===== Price history chart ===== */
+    .chart-block {
+      margin: 16px 0;
+      padding: 14px 12px 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .chart-caption {
+      font-family: 'Vazirmatn', sans-serif;
+      font-size: 13px;
+      opacity: 0.7;
+      margin: 0 4px 8px;
+    }
   </style>
 </head>
 <body>
@@ -116,6 +131,7 @@
     </footer>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
   <script src="app.js"></script>
 
   <script>

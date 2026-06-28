@@ -58,6 +58,152 @@ async function loadData() {
 
   renderProductNav(products);
   renderProducts(products);
+  loadHistoryAndRenderCharts(products);
+}
+
+// ---- تاریخچه قیمت و نمودار ----
+async function loadHistoryAndRenderCharts(products) {
+  let history = [];
+  try {
+    const res = await fetch("history.json", { cache: "no-store" });
+    history = await res.json();
+  } catch (err) {
+    console.error("خطا در دریافت تاریخچه قیمت:", err);
+    return;
+  }
+
+  if (!Array.isArray(history) || history.length < 2) {
+    // با کمتر از ۲ نقطه، نمودار معنی‌داری نیست
+    return;
+  }
+
+  if (typeof Chart === "undefined") {
+    console.warn("Chart.js در دسترس نیست؛ نمودار رسم نشد.");
+    return;
+  }
+
+  products.forEach((product) => {
+    renderProductCharts(product, history);
+  });
+}
+
+// قیمت می‌تواند عدد، بازه‌ی رشته‌ای ("385000-410000") یا صفر/خالی (یعنی هنوز ثبت نشده) باشد
+function parsePriceValue(price) {
+  if (price === null || price === undefined) return null;
+  if (typeof price === "number") {
+    return price > 0 ? price : null;
+  }
+  if (typeof price === "string") {
+    const trimmed = price.trim();
+    if (!trimmed) return null;
+    const rangeMatch = trimmed.match(/^(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)$/);
+    if (rangeMatch) {
+      const a = parseFloat(rangeMatch[1]);
+      const b = parseFloat(rangeMatch[2]);
+      return (a + b) / 2;
+    }
+    const num = parseFloat(trimmed.replace(/,/g, ""));
+    return isNaN(num) || num <= 0 ? null : num;
+  }
+  return null;
+}
+
+function renderProductCharts(product, history) {
+  const container = document.getElementById(`charts-container-${product.id}`);
+  if (!container) return;
+  container.innerHTML = "";
+
+  // واحدهای مختلف (تومان/کیلوگرم در برابر دلار/تن) هرگز در یک نمودار با هم نباشند
+  const unitOrder = [];
+  const labelsByUnit = {};
+  (product.prices || []).forEach((pr) => {
+    const unit = pr.unit || "نامشخص";
+    const label = pr.label || "قیمت";
+    if (!labelsByUnit[unit]) {
+      labelsByUnit[unit] = [];
+      unitOrder.push(unit);
+    }
+    if (!labelsByUnit[unit].includes(label)) labelsByUnit[unit].push(label);
+  });
+
+  // تاریخ‌های موجود در تاریخچه برای این محصول (برچسب فارسی/جلالی برای محور افق)
+  const dateLabels = history.map((entry) => entry.date_fa || entry.date);
+
+  unitOrder.forEach((unit, unitIdx) => {
+    const labels = labelsByUnit[unit];
+    const palette = ["#15140F", "#B5862B", "#6B7280", "#9CA3AF"];
+
+    const datasets = labels.map((label, idx) => {
+      const values = [];
+      const rawValues = [];
+      history.forEach((entry) => {
+        const hp = (entry.products || []).find((p) => p.id === product.id);
+        const hPrice = hp ? (hp.prices || []).find((pr) => (pr.label || "قیمت") === label) : null;
+        rawValues.push(hPrice ? hPrice.price : null);
+        values.push(hPrice ? parsePriceValue(hPrice.price) : null);
+      });
+      return {
+        label,
+        data: values,
+        rawValues,
+        borderColor: palette[idx % palette.length],
+        backgroundColor: palette[idx % palette.length],
+        spanGaps: true,
+        tension: 0.25,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        fill: false
+      };
+    });
+
+    // اگر هیچ خطی حداقل ۲ نقطه‌ی واقعی نداشت، این نمودار را اصلاً نشان نده
+    const hasEnoughData = datasets.some(
+      (ds) => ds.data.filter((v) => v !== null).length >= 2
+    );
+    if (!hasEnoughData) return;
+
+    const block = document.createElement("div");
+    block.className = "chart-block";
+    block.innerHTML = `
+      <p class="chart-caption">روند قیمت — ${unit}</p>
+      <canvas height="180"></canvas>
+    `;
+    container.appendChild(block);
+    const canvasEl = block.querySelector("canvas");
+
+    new Chart(canvasEl, {
+      type: "line",
+      data: { labels: dateLabels, datasets },
+      options: {
+        responsive: true,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: datasets.length > 1, labels: { font: { family: "Vazirmatn" } } },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const raw = ctx.dataset.rawValues[ctx.dataIndex];
+                const display = raw !== null && raw !== undefined ? formatNumber(raw) : "—";
+                return `${ctx.dataset.label}: ${display}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { font: { family: "Vazirmatn" } }
+          },
+          y: {
+            beginAtZero: false,
+            ticks: {
+              font: { family: "IBM Plex Mono" },
+              callback: (val) => formatNumber(val)
+            }
+          }
+        }
+      }
+    });
+  });
 }
 
 function formatNumber(n) {
@@ -126,6 +272,7 @@ function renderProducts(products) {
         <p>${product.name_en || ""}</p>
       </div>
       <div class="prices-wrap">${priceCardsHtml}</div>
+      <div class="charts-container" id="charts-container-${product.id}"></div>
       ${mediaHtml}
       ${product.description ? `<p class="description-block">${product.description}</p>` : ""}
       <a class="ask-product-btn" href="#" data-product-name="${product.name}">
