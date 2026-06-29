@@ -11,7 +11,13 @@ const CONFIG = {
   CALL_NUMBER_RAW: "+989375026963",
 
   EMAIL_ADDRESS: "kaedistacompany@gmail.com",
-  WEBSITE_URL: "https://plum-norma-17.tiiny.site"
+  WEBSITE_URL: "https://plum-norma-17.tiiny.site",
+
+  // ===== ربات تلگرام برای دریافت درخواست‌های "می‌خوام بیشتر بدانم" =====
+  // راهنمای ساخت در پایین همین فایل (یا در فایل README) آمده است.
+  // اگر این دو مقدار خالی بماند، دکمه‌ی شناور به‌طور خودکار مخفی می‌شود.
+  TELEGRAM_BOT_TOKEN: "8608112609:AAG9U3GdbOB_ZF3uWBPjdipNsQ9Byi4wrZM",
+  TELEGRAM_CHAT_ID: "194772036"
 };
 // =================================================================
 
@@ -30,12 +36,14 @@ const WHATSAPP_NUMBER = normalizeIranNumber(CONFIG.WHATSAPP_NUMBER_RAW);
 const CALL_NUMBER = "+" + normalizeIranNumber(CONFIG.CALL_NUMBER_RAW);
 
 let deferredInstallPrompt = null;
+let lastLoadedProducts = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
   setupGenericContactLinks();
   setupInstallFlow();
   registerServiceWorker();
+  setupLeadPill();
 });
 
 async function loadData() {
@@ -54,11 +62,13 @@ async function loadData() {
   }
 
   const products = Array.isArray(payload.products) ? payload.products : [];
+  lastLoadedProducts = products;
   document.getElementById("updated-at").textContent = `آخرین بروزرسانی: ${payload.updated_at || "-"}`;
 
   renderProductNav(products);
   renderProducts(products);
   loadHistoryAndRenderCharts(products);
+  populateLeadProductOptions(products);
 }
 
 // ---- تاریخچه قیمت و نمودار ----
@@ -379,4 +389,110 @@ function registerServiceWorker() {
       console.error("خطا در ثبت service worker:", err);
     });
   }
+}
+
+// ===================== دکمه شناور "بیشتر بدانید" + ارسال به تلگرام =====================
+
+function populateLeadProductOptions(products) {
+  const select = document.getElementById("lead-modal-product");
+  if (!select) return;
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">انتخاب کنید...</option>';
+  products.forEach((p) => {
+    const opt = document.createElement("option");
+    opt.value = p.name;
+    opt.textContent = p.name;
+    select.appendChild(opt);
+  });
+  if (currentValue) select.value = currentValue;
+}
+
+function setupLeadPill() {
+  const pill = document.getElementById("lead-pill");
+  const overlay = document.getElementById("lead-modal-overlay");
+  const cancelBtn = document.getElementById("lead-cancel-btn");
+  const submitBtn = document.getElementById("lead-submit-btn");
+  const statusEl = document.getElementById("lead-modal-status");
+
+  if (!pill || !overlay) return;
+
+  // اگر ربات تلگرام تنظیم نشده باشد، کل قابلیت را مخفی کن (به‌جای نمایش چیزی که کار نمی‌کند)
+  if (!CONFIG.TELEGRAM_BOT_TOKEN || !CONFIG.TELEGRAM_CHAT_ID) {
+    console.warn("ربات تلگرام تنظیم نشده؛ دکمه «بیشتر بدانید» نمایش داده نمی‌شود.");
+    return;
+  }
+
+  const SHOW_MS = 6000;
+  const HIDE_MS = 20000;
+
+  function cycle() {
+    pill.classList.add("show");
+    setTimeout(() => {
+      pill.classList.remove("show");
+      setTimeout(cycle, HIDE_MS);
+    }, SHOW_MS);
+  }
+  // کمی تاخیر در شروع تا با بنر اطلاعیه تداخل نداشته باشد
+  setTimeout(cycle, 4000);
+
+  function openModal() {
+    pill.classList.remove("show");
+    overlay.classList.add("show");
+    statusEl.textContent = "";
+    statusEl.className = "";
+  }
+  function closeModal() {
+    overlay.classList.remove("show");
+  }
+
+  pill.addEventListener("click", openModal);
+  cancelBtn.addEventListener("click", closeModal);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  submitBtn.addEventListener("click", async () => {
+    const name = document.getElementById("lead-modal-name").value.trim();
+    const phone = document.getElementById("lead-modal-phone").value.trim();
+    const product = document.getElementById("lead-modal-product").value;
+
+    if (!name || !phone || !product) {
+      statusEl.textContent = "لطفاً نام، شماره تماس و محصول را وارد کنید.";
+      statusEl.className = "error";
+      return;
+    }
+
+    submitBtn.disabled = true;
+    statusEl.textContent = "در حال ارسال...";
+    statusEl.className = "";
+
+    const text =
+      `📩 درخواست اطلاعات بیشتر\n` +
+      `نام: ${name}\n` +
+      `شماره تماس: ${phone}\n` +
+      `محصول مورد علاقه: ${product}`;
+
+    try {
+      const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CONFIG.TELEGRAM_CHAT_ID, text })
+      });
+      if (!res.ok) throw new Error("Telegram API error");
+
+      statusEl.textContent = "ارسال شد! به‌زودی با شما تماس می‌گیریم.";
+      statusEl.className = "success";
+      document.getElementById("lead-modal-name").value = "";
+      document.getElementById("lead-modal-phone").value = "";
+      document.getElementById("lead-modal-product").value = "";
+      setTimeout(closeModal, 1800);
+    } catch (err) {
+      console.error("خطا در ارسال به تلگرام:", err);
+      statusEl.textContent = "ارسال ناموفق بود. لطفاً دوباره تلاش کنید یا از واتساپ استفاده کنید.";
+      statusEl.className = "error";
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 }
