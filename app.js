@@ -473,13 +473,13 @@ function setupLeadPill() {
       `محصول مورد علاقه: ${product}`;
 
     try {
-      const url = `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: CONFIG.TELEGRAM_CHAT_ID, text })
-      });
-      if (!res.ok) throw new Error("Telegram API error");
+      const url =
+        `https://api.telegram.org/bot${CONFIG.TELEGRAM_BOT_TOKEN}/sendMessage` +
+        `?chat_id=${encodeURIComponent(CONFIG.TELEGRAM_CHAT_ID)}` +
+        `&text=${encodeURIComponent(text)}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.description || "Telegram API error");
 
       statusEl.textContent = "ارسال شد! به‌زودی با شما تماس می‌گیریم.";
       statusEl.className = "success";
