@@ -1,4 +1,4 @@
-const CACHE_NAME = "femn-app-v13"; // هر بار که app.js/index.html/style.css را تغییر می‌دهید، این عدد را +1 کنید
+const CACHE_NAME = "femn-app-v14"; // هر بار که app.js/index.html/style.css را تغییر می‌دهید، این عدد را +1 کنید
 const CORE_ASSETS = [
   "./index.html",
   "./style.css",
