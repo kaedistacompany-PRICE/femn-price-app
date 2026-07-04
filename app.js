@@ -142,7 +142,7 @@ function renderProductCharts(product, history) {
       const rawValues = [];
       history.forEach((entry) => {
         const hp = (entry.products || []).find((p) => p.id === product.id);
-        const hPrice = hp ? (hp.prices || []).find((pr) => (pr.label || "قیمت") === label) : null;
+    
         rawValues.push(hPrice ? hPrice.price : null);
         values.push(hPrice ? parsePriceValue(hPrice.price) : null);
       });
