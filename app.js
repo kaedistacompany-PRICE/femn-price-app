@@ -164,7 +164,7 @@ function renderProductCharts(product, history) {
     const hasEnoughData = datasets.some(
       (ds) => ds.data.filter((v) => v !== null).length >= 2
     );
-    if (!hasEnoughData) return;
+    // if (!hasEnoughData) return;
 
     const block = document.createElement("div");
     block.className = "chart-block";
