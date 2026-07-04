@@ -1,5 +1,8 @@
-const CACHE_NAME = "femn-app-v13"; // هر بار که app.js/index.html/style.css را تغییر می‌دهید، این عدد را +1 کنید
+const CACHE_NAME = "femn-app-v20";
+
+// فایل‌های اصلی اپ (App Shell)
 const CORE_ASSETS = [
+  "./",
   "./index.html",
   "./style.css",
   "./app.js",
@@ -8,9 +11,10 @@ const CORE_ASSETS = [
   "./icon-512.png"
 ];
 
-// این فایل‌ها همیشه باید تازه باشند، هیچ‌وقت برای مدت طولانی کش نشوند
-const NETWORK_FIRST_FILES = ["data.json", "history.json"];
+// دیتاهایی که باید همیشه تازه باشند
+const DATA_FILES = ["data.json", "history.json"];
 
+// ===== INSTALL =====
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS))
@@ -18,52 +22,92 @@ self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
 
+// ===== ACTIVATE =====
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
       )
     )
   );
   self.clients.claim();
 });
 
+// ===== FETCH =====
 self.addEventListener("fetch", (event) => {
-  const { request } = event;
+  const request = event.request;
+
   if (request.method !== "GET") return;
 
-  // فقط درخواست‌های همین سایت (همان دامنه) را مدیریت کن.
-  // درخواست‌های خارجی (مثل API تلگرام یا CDN چارت) را دست‌نخورده به مرورگر بسپار،
-  // وگرنه ممکن است باعث شکست کامل آن درخواست‌ها شود.
-  if (new URL(request.url).origin !== self.location.origin) {
+  const url = new URL(request.url);
+
+  // ❗ درخواست‌های خارجی (CDN مثل chart.js) رو دست نزن
+  if (url.origin !== location.origin) {
     return;
   }
 
-  const isNetworkFirst = NETWORK_FIRST_FILES.some((name) => request.url.includes(name));
-
-  if (isNetworkFirst) {
-    // اول از اینترنت بگیر؛ فقط اگر آفلاین بود، از کش (نسخه‌ی قبلی) استفاده کن
+  // ===== DATA STRATEGY (Network First) =====
+  if (DATA_FILES.some((file) => url.pathname.endsWith(file))) {
     event.respondWith(
       fetch(request)
         .then((response) => {
+          // اگر response خراب بود، نریز تو کش
+          if (!response || response.status !== 200) return response;
+
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(async () => {
+          const cached = await caches.match(request);
+
+          if (cached) return cached;
+
+          // 👇 جلوگیری از Pending
+          return new Response(JSON.stringify({}), {
+            headers: { "Content-Type": "application/json" }
+          });
+        })
     );
     return;
   }
 
-  // فایل‌های ثابت (app.js, index.html, ...): اول از کش، بعد از اینترنت
+  // ===== APP SHELL (Cache First + update in background) =====
   event.respondWith(
     caches.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
-        return response;
+      const fetchPromise = fetch(request)
+        .then((networkResponse) => {
+          if (
+            networkResponse &&
+            networkResponse.status === 200 &&
+            networkResponse.type === "basic"
+          ) {
+            const clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(request, clone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => null);
+
+      // اگر کش داشت → سریع بده
+      if (cached) {
+        return cached;
+      }
+
+      // اگر کش نداشت → برو اینترنت
+      return fetchPromise.then((res) => {
+        if (res) return res;
+
+        // fallback نهایی
+        return new Response("Offline", { status: 503 });
       });
     })
   );
