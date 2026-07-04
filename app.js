@@ -470,3 +470,36 @@ function setupLeadPill() {
     setTimeout(closeModal, 2200);
   });
 }
+let chart;
+
+function updateChart(history) {
+  const ctx = document.getElementById("priceChart").getContext("2d");
+
+  const labels = history.map(item => item.date_fa);
+
+  const prices = history.map(item => {
+    const product = item.products.find(p => p.id === "femn-hc");
+    if (!product) return null;
+
+    const priceObj = product.prices.find(p => p.label.includes("بازار ایران"));
+    if (!priceObj || !priceObj.price) return null;
+
+    const range = priceObj.price;
+    const [min, max] = range.split("-").map(Number);
+    return (min + max) / 2;
+  });
+
+  if (chart) chart.destroy();
+
+  chart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "قیمت فرومنگنز",
+        data: prices,
+        tension: 0.3
+      }]
+    }
+  });
+}
