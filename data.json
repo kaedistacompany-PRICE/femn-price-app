@@ -60,14 +60,14 @@
     {
       "id": "mn-ore",
       "name": "سنگ منگنز",
-      "name_en": "Manganese Ore",
+      "name_en": "Manganese Oreعیار 38",
       "description": "",
       "image_url": "",
       "media_type": "image",
       "prices": [
         { "label": "قیمت بازار ایران", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null },
-        { "label": "واردات از هند (FOB)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
-        { "label": "واردات از هند (CFR)", "price": 0, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از ترکیه (FOB)", "price": 194, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
+        { "label": "واردات از هند (CFR)", "price": 294, "unit": "دلار / تن", "change_percent": null, "change_direction": null },
         { "label": "کارگو موجود در ایران (DDP)", "price": 0, "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
       ]
     }
