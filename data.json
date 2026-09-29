@@ -1,5 +1,5 @@
 {
-  "updated_at": "1405/06/27- 11:20",
+  "updated_at": "1405/07/06- 11:20",
   "products": [
     {
       "id": "femn-hc",
@@ -11,7 +11,7 @@
       "prices": [
         { "label": "قیمت بازار ایران", "price": "480-530000", "unit": "تومان / کیلوگرم", "change_percent": 1.2, "change_direction": "up" },
         { "label": "واردات از هند (FOB)", "price": "960-1010", "unit": "دلار / تن", "change_percent": 0.5, "change_direction": "up" },
-        { "label": "واردات از هند (CFR BND)", "price": "1275-1300", "unit": "دلار / تن", "change_percent": 0.3, "change_direction": "down" },
+        { "label": "واردات از هند (CFR BND)", "price": "1285-1320", "unit": "دلار / تن", "change_percent": 0.3, "change_direction": "down" },
         { "label": "کارگو موجود در ایران (DDP)", "price": "480000-530000", "unit": "تومان / کیلوگرم", "change_percent": null, "change_direction": null }
       ]
     },
